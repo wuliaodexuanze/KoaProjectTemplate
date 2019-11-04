@@ -16,7 +16,10 @@ const catchError = async (ctx, next) => {
     await next()
   } catch (err) {
     // 生产环境让异常出现在控制台
-    if (global.config.environment === 'dev') {
+    // 生产环境让异常出现在控制台
+    const isHttpException = err instanceof HttpException // 检测自定义错误提示
+    const isDev = global.config.environment === 'dev'
+    if (!isHttpException && isDev) {
       throw err
     }
 
